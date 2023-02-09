@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="columns is-mobile">
-      <div class="column is-half is-offset-one-quarter has-text-centered">
+      <div class="column has-text-centered">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/168px-Spotify_logo_without_text.svg.png">
         <div class="search">
           <input class="input is-primary" type="text" placeholder="Enter artist name" v-model="searchTerm">
@@ -36,7 +36,8 @@ export default {
 }
 
 .input {
-  margin: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .size-is-7 {
