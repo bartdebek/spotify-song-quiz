@@ -34,17 +34,11 @@
         </figure>
           <p class="is-size-3 is-relative">Congrats, you scored: {{ points }}/{{ questionList.length }} points</p>
       </div>
-    </div>
-    <div class="column is-narrow has-text-centered">
-      <aside class="menu">
-        <ul class="menu-list">
-          <div class="box points" :class="{ 'animate': isAnimated }">
+      <div class="box points" :class="{ 'animate': isAnimated }">
             <p class="is-size-4 is-relative">You have: {{ points }}/{{ questionList.length }}  points</p>
             <p v-if="this.points >= 3" class="is-size-4 is-relative">{{ congratsMessage }}</p>
             <button @click="refreshButton()">New Quiz</button>
-          </div>
-        </ul>
-      </aside>
+      </div>
     </div>
     </div>
   </div>
