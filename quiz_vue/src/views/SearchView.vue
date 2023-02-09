@@ -5,7 +5,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/168px-Spotify_logo_without_text.svg.png">
         <div class="search">
           <input class="input is-primary" type="text" placeholder="Enter artist name" v-model="searchTerm">
-          <button class="button is-success" @click="redirectToSearchPage">Strart Quiz</button>
+          <button class="button is-success" @click="redirectToSearchPage">Start Quiz</button>
           <p class="size-is-7 is-italic">Please be aware that some artist may not be available due to lack of "preview" tracks on Spotify</p>
         </div>
       </div>
