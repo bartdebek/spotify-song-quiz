@@ -1,6 +1,5 @@
 import requests
 import random
-import time
 import base64
 
 from environs import Env
@@ -8,8 +7,8 @@ from environs import Env
 env = Env()
 env.read_env()
 
+
 class SpotifyGenerator:
-    
 
     def __init__(self, artist_name, limit=20):
         self.artist_name = artist_name
@@ -19,8 +18,8 @@ class SpotifyGenerator:
 
     def get_artist_id(self):
         try:
-            params={'q': self.artist_name, 'type':'artist', 'limit':1}
-            headers={'Authorization': self.get_bearer_token()}
+            params = {'q': self.artist_name, 'type': 'artist', 'limit': 1}
+            headers = {'Authorization': self.get_bearer_token()}
             response = requests.get('https://api.spotify.com/v1/search', params=params, headers=headers).json()
             return response['artists']['items'][0]['id']
         except:
@@ -28,7 +27,7 @@ class SpotifyGenerator:
 
     def get_artist_name(self):
         try:
-            headers={'Authorization': self.get_bearer_token()}
+            headers = {'Authorization': self.get_bearer_token()}
             response = requests.get(f'https://api.spotify.com/v1/artists/{self.get_artist_id()}', headers=headers).json()
             return response['name']
         except:
@@ -36,7 +35,7 @@ class SpotifyGenerator:
 
     def get_artist_picture(self):
         try:
-            headers={'Authorization': self.get_bearer_token()}
+            headers = {'Authorization': self.get_bearer_token()}
             response = requests.get(f'https://api.spotify.com/v1/artists/{self.get_artist_id()}', headers=headers).json()
             return response['images'][0]['url']
         except:
@@ -56,7 +55,6 @@ class SpotifyGenerator:
             }
         response = requests.post('https://accounts.spotify.com/api/token', headers=headers, data=data)
 
-
         if response.status_code == 200:
             bearer_token = f'Bearer {response.json()["access_token"]}'
             return bearer_token
@@ -70,7 +68,7 @@ class SpotifyGenerator:
             artist_id = self.get_artist_id()
             id = artist_id
             url = f'https://api.spotify.com/v1/artists/{id}/albums'
-            params = {'limit':self.limit}
+            params = {'limit': self.limit}
             headers = {'Authorization': self.get_bearer_token()}
             response = requests.get(url=url, params=params, headers=headers).json()
             data = response['items']
@@ -87,13 +85,12 @@ class SpotifyGenerator:
         except:
             print("Incorrect random album query")
 
-
     def generate_song_quiz(self):
         try:
             artist_id = self.get_artist_id()
             id = artist_id
             url = f'https://api.spotify.com/v1/artists/{id}/top-tracks'
-            params = {'limit':self.limit, 'market':'PL'}
+            params = {'limit': self.limit, 'market': 'PL'}
             headers = {'Authorization': self.get_bearer_token()}
             response = requests.get(url=url, params=params, headers=headers).json()
             data = response['tracks']
