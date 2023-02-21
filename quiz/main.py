@@ -1,4 +1,4 @@
-from utils import SpotifyGenerator
+from quiz.utils import SpotifyGenerator
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
