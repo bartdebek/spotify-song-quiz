@@ -1,4 +1,4 @@
-from quiz.utils import SpotifyGenerator
+from utils import SpotifyGenerator
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,7 +13,7 @@ app.add_middleware(
     allow_headers=['*']
 )
 
-# This should be different database
+
 redis = get_redis_connection(
     host='redis-16684.c293.eu-central-1-1.ec2.cloud.redislabs.com',
     port=16684,

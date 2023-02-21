@@ -20,25 +20,35 @@ class SpotifyGenerator:
         try:
             params = {'q': self.artist_name, 'type': 'artist', 'limit': 1}
             headers = {'Authorization': self.get_bearer_token()}
-            response = requests.get('https://api.spotify.com/v1/search', params=params, headers=headers).json()
+            response = requests.get(
+                'https://api.spotify.com/v1/search',
+                params=params,
+                headers=headers
+            ).json()
             return response['artists']['items'][0]['id']
-        except:
+        except ValueError:
             print("Incorrect artist id query")
 
     def get_artist_name(self):
         try:
             headers = {'Authorization': self.get_bearer_token()}
-            response = requests.get(f'https://api.spotify.com/v1/artists/{self.get_artist_id()}', headers=headers).json()
+            response = requests.get(
+                f'https://api.spotify.com/v1/artists/{self.get_artist_id()}',
+                headers=headers
+            ).json()
             return response['name']
-        except:
+        except ValueError:
             print("Incorrect artist name query")
 
     def get_artist_picture(self):
         try:
             headers = {'Authorization': self.get_bearer_token()}
-            response = requests.get(f'https://api.spotify.com/v1/artists/{self.get_artist_id()}', headers=headers).json()
+            response = requests.get(
+                f'https://api.spotify.com/v1/artists/{self.get_artist_id()}',
+                headers=headers
+            ).json()
             return response['images'][0]['url']
-        except:
+        except ValueError:
             print("Incorrect artist picture query")
 
     def get_bearer_token(self):
@@ -82,7 +92,7 @@ class SpotifyGenerator:
             random_album = random.choice(album_list)
             print('Your random album:')
             print(f'Album: {random_album[0]} \nCover: {random_album[1]} \nSpotify Link: {random_album[2]}\n')
-        except:
+        except ValueError:
             print("Incorrect random album query")
 
     def generate_song_quiz(self):
@@ -103,20 +113,20 @@ class SpotifyGenerator:
                     song_name = song['name']
                     spotify_link = song['external_urls']['spotify']
                     preview = song['preview_url']
-                songs_list.append([song_name, spotify_link, preview])
+                    songs_list.append([song_name, spotify_link, preview])
             
             # creating 3 sets of 3 songs each
             i = 0
             question_dict = {}
-            answers_list = []
             while i < 3:
                 random_songs = random.sample(songs_list, k=3)
                 song_list = []
                 for song in random_songs:
-                    song_dict = {}
-                    song_dict['title'] = song[0]
-                    song_dict['link'] = song[1]
-                    song_dict['sample'] = song[2]
+                    song_dict = {
+                        'title': song[0],
+                        'link': song[1],
+                        'sample': song[2],
+                    }
                     song_list.append(song_dict)
                 # adding correct answer to song list
                 correct_answer = random.choice(song_list)
@@ -126,5 +136,5 @@ class SpotifyGenerator:
                 i += 1
 
             return question_dict
-        except:
+        except ValueError:
             print("Incorrect random song query")
