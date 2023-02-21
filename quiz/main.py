@@ -3,8 +3,11 @@ from utils import SpotifyGenerator
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from redis_om import get_redis_connection
+from environs import Env
 
 app = FastAPI()
+env = Env()
+env.read_env()
 
 app.add_middleware(
     CORSMiddleware,
@@ -15,9 +18,9 @@ app.add_middleware(
 
 
 redis = get_redis_connection(
-    host='redis-16684.c293.eu-central-1-1.ec2.cloud.redislabs.com',
-    port=16684,
-    password='BvvO31FmhvHBNyWqzOClffUPDZYf9uAz',
+    host=env('REDIS_HOST'),
+    port=env('REDIS_PORT'),
+    password=env('REDIS_PASSWORD'),
     decode_responses=True
 )
 

@@ -9,6 +9,9 @@ env.read_env()
 
 
 class SpotifyGenerator:
+    """
+    Class that takes artist name to create an object and lets user get artist parameters from Spotify API
+    """
 
     def __init__(self, artist_name, limit=20):
         self.artist_name = artist_name
