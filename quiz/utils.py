@@ -112,7 +112,7 @@ class SpotifyGenerator:
             songs_list = []
             # generation list of songs
             for song in data:
-                if song['preview_url']:
+                if song.get('preview_url'):
                     song_name = song['name']
                     spotify_link = song['external_urls']['spotify']
                     preview = song['preview_url']

@@ -1,8 +1,7 @@
-from quiz.utils import SpotifyGenerator
+from utils import SpotifyGenerator
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from redis_om import get_redis_connection
 from environs import Env
 
 app = FastAPI()
@@ -11,17 +10,9 @@ env.read_env()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000', 'http://localhost:8080', 'https://spotify-quiz-app.netlify.app'],
+    allow_origins=['http://localhost:3000', 'http://localhost:8080', 'https://spotify-quiz-app.netlify.app', 'http://192.168.1.7:8080'],
     allow_methods=['*'],
     allow_headers=['*']
-)
-
-
-redis = get_redis_connection(
-    host=env('REDIS_HOST'),
-    port=env('REDIS_PORT'),
-    password=env('REDIS_PASSWORD'),
-    decode_responses=True
 )
 
 
