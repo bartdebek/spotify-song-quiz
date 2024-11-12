@@ -172,7 +172,7 @@ class SpotifyGenerator:
                         songs_list.append([song_name, spotify_link, preview])
                     else:
                         continue
-
+                print(songs_list)
                 if len(songs_list) < 3:
                     continue
             
