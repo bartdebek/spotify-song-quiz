@@ -4,7 +4,7 @@ import base64
 
 from environs import Env
 
-from utils import TOP_100_ARTISTS
+from consts import TOP_100_ARTISTS
 
 env = Env()
 env.read_env()
