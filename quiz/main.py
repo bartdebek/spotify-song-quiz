@@ -18,6 +18,21 @@ app.add_middleware(
 
 @app.get('/questions/{artist}')
 async def read_item(artist: str):
+    my_generator = SpotifyGenerator(limit=30)
+    generated_questions = my_generator.generate_song_quiz(artist)
+    artist_name = my_generator.get_artist_name(artist)
+    artist_picture = my_generator.get_artist_picture(artist)
+    answers_list = [generated_questions[x] for x in generated_questions]
+    response = {
+        'artist_name': artist_name,
+        'artist_picture': artist_picture,
+        'questions': answers_list,
+        }
+
+    return response
+
+@app.get('/questions/top100')
+async def read_item(artist: str):
     my_generator = SpotifyGenerator(artist, limit=30)
     generated_questions = my_generator.generate_song_quiz()
     artist_name = my_generator.get_artist_name()

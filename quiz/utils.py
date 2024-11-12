@@ -4,6 +4,8 @@ import base64
 
 from environs import Env
 
+from consts import *
+
 env = Env()
 env.read_env()
 
@@ -13,13 +15,12 @@ class SpotifyGenerator:
     Class that takes artist name to create an object and lets user get artist parameters from Spotify API
     """
 
-    def __init__(self, artist_name, limit=20):
-        self.artist_name = artist_name
+    def __init__(self, limit=20):
         self.limit = limit
         self.client_id = env("CLIENT_ID")
         self.client_secret = env("CLIENT_SECRET")
 
-    def get_artist_id(self):
+    def get_artist_id(self, artist_name):
         try:
             params = {'q': self.artist_name, 'type': 'artist', 'limit': 1}
             headers = {'Authorization': self.get_bearer_token()}
@@ -32,22 +33,22 @@ class SpotifyGenerator:
         except ValueError:
             print("Incorrect artist id query")
 
-    def get_artist_name(self):
+    def get_artist_name(self, artist_name):
         try:
             headers = {'Authorization': self.get_bearer_token()}
             response = requests.get(
-                f'https://api.spotify.com/v1/artists/{self.get_artist_id()}',
+                f'https://api.spotify.com/v1/artists/{self.get_artist_id(artist_name)}',
                 headers=headers
             ).json()
             return response['name']
         except ValueError:
             print("Incorrect artist name query")
 
-    def get_artist_picture(self):
+    def get_artist_picture(self, artist_name):
         try:
             headers = {'Authorization': self.get_bearer_token()}
             response = requests.get(
-                f'https://api.spotify.com/v1/artists/{self.get_artist_id()}',
+                f'https://api.spotify.com/v1/artists/{self.get_artist_id(artist_name)}',
                 headers=headers
             ).json()
             return response['images'][0]['url']
@@ -98,9 +99,9 @@ class SpotifyGenerator:
         except ValueError:
             print("Incorrect random album query")
 
-    def generate_song_quiz(self):
+    def generate_song_quiz(self, artist_name):
         try:
-            artist_id = self.get_artist_id()
+            artist_id = self.get_artist_id(artist_name)
             id = artist_id
             url = f'https://api.spotify.com/v1/artists/{id}/top-tracks'
             params = {'limit': self.limit, 'market': 'PL'}
@@ -141,6 +142,51 @@ class SpotifyGenerator:
                 # creating answers dictionary for each iteration
                 question_dict[i] = song_list
                 i += 1
+            return question_dict
+        except ValueError:
+            print("Incorrect random song query")
+
+    def generate_top100_artists_quiz(self):
+
+        artists_list = random.sample(TOP_100_ARTISTS, k=10)
+        print(artists_list)
+        try:
+            for i, artist in enumerate(artists_list):
+                artist_id = self.get_artist_id(artist)
+                id = artist_id
+                url = f'https://api.spotify.com/v1/artists/{id}/top-tracks'
+                params = {'limit': self.limit, 'market': 'PL'}
+                headers = {'Authorization': self.get_bearer_token()}
+                response = requests.get(url=url, params=params, headers=headers).json()
+                data = response['tracks']
+
+                songs_list = []
+                # generation list of songs
+                for song in data:
+                    if song.get('preview_url'):
+                        song_name = song['name']
+                        spotify_link = song['external_urls']['spotify']
+                        preview = song['preview_url']
+                        songs_list.append([song_name, spotify_link, preview])
+            
+                # creating set of 3 songs each artist
+                question_dict = {}
+                random_songs = random.sample(songs_list, k=3)
+                song_list = []
+                for song in random_songs:
+                    song_dict = {
+                        'title': song[0],
+                        'link': song[1],
+                        'sample': song[2],
+                    }
+                    song_list.append(song_dict)
+                    songs_list.remove(song)
+                    # adding correct answer to song list
+                    correct_answer = random.choice(song_list)
+                    song_list.append(correct_answer)
+                    # creating answers dictionary for each iteration
+                    question_dict[i] = song_list
+                    print(question_dict)
             return question_dict
         except ValueError:
             print("Incorrect random song query")
