@@ -174,8 +174,9 @@ class SpotifyGenerator:
 
         artists_list = random.sample(TOP_100_ARTISTS, k=10)
         print(artists_list)
-        try:
+        # try:
             for i, artist in enumerate(artists_list):
+                print(i)
                 artist_id = self.get_artist_id(artist)
                 id = artist_id
                 url = f'https://api.spotify.com/v1/artists/{id}/top-tracks'
@@ -212,5 +213,5 @@ class SpotifyGenerator:
                     question_dict[i] = song_list
                     print(question_dict)
             return question_dict
-        except ValueError:
-            print("Incorrect random song query")
+        # except ValueError:
+        #     print("Incorrect random song query")
