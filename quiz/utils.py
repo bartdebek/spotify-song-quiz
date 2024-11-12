@@ -153,12 +153,14 @@ class SpotifyGenerator:
         try:
             for i, artist in enumerate(artists_list):
                 artist_id = self.get_artist_id(artist)
+                print(i, artist_id)
                 id = artist_id
                 url = f'https://api.spotify.com/v1/artists/{id}/top-tracks'
                 params = {'limit': self.limit, 'market': 'PL'}
                 headers = {'Authorization': self.get_bearer_token()}
                 response = requests.get(url=url, params=params, headers=headers).json()
                 data = response['tracks']
+                print(data)
 
                 songs_list = []
                 # generation list of songs
@@ -168,6 +170,11 @@ class SpotifyGenerator:
                         spotify_link = song['external_urls']['spotify']
                         preview = song['preview_url']
                         songs_list.append([song_name, spotify_link, preview])
+                    else:
+                        continue
+
+                if len(songs_list) < 3:
+                    continue
             
                 # creating set of 3 songs each artist
                 question_dict = {}
