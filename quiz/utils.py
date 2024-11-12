@@ -188,6 +188,7 @@ class SpotifyGenerator:
                         'sample': song[2],
                     }
                     song_list.append(song_dict)
+                    songs_list.remove(song)
                     # adding correct answer to song list
                     correct_answer = random.choice(song_list)
                     song_list.append(correct_answer)
