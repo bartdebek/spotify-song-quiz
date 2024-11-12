@@ -160,7 +160,7 @@ class SpotifyGenerator:
                 headers = {'Authorization': self.get_bearer_token()}
                 response = requests.get(url=url, params=params, headers=headers).json()
                 data = response['tracks']
-                print(data)
+                # print(data)
 
                 songs_list = []
                 # generation list of songs
@@ -174,6 +174,7 @@ class SpotifyGenerator:
                         continue
                 print(songs_list)
                 if len(songs_list) < 3:
+                    print(f"Less than 3 songs with preview for artist {artist}")
                     continue
             
                 # creating set of 3 songs each artist
@@ -187,7 +188,6 @@ class SpotifyGenerator:
                         'sample': song[2],
                     }
                     song_list.append(song_dict)
-                    songs_list.remove(song)
                     # adding correct answer to song list
                     correct_answer = random.choice(song_list)
                     song_list.append(correct_answer)
