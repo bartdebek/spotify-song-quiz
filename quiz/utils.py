@@ -141,7 +141,6 @@ class SpotifyGenerator:
                 # creating answers dictionary for each iteration
                 question_dict[i] = song_list
                 i += 1
-
             return question_dict
         except ValueError:
             print("Incorrect random song query")
