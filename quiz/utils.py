@@ -22,7 +22,7 @@ class SpotifyGenerator:
 
     def get_artist_id(self, artist_name):
         try:
-            params = {'q': self.artist_name, 'type': 'artist', 'limit': 1}
+            params = {'q': artist_name, 'type': 'artist', 'limit': 1}
             headers = {'Authorization': self.get_bearer_token()}
             response = requests.get(
                 'https://api.spotify.com/v1/search',
