@@ -34,7 +34,7 @@ async def read_item(artist: str):
 @app.get('/top100')
 async def read_root():
     my_generator = SpotifyGenerator(limit=30)
-    generated_questions = generate_top100_artists_quiz()
+    generated_questions = my_generator.generate_top100_artists_quiz()
     answers_list = [generated_questions[x] for x in generated_questions]
     response = {
         'questions': answers_list,
