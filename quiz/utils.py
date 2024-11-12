@@ -4,34 +4,10 @@ import base64
 
 from environs import Env
 
-# from quiz.utils import TOP_100_ARTISTS
+from utils import TOP_100_ARTISTS
 
 env = Env()
 env.read_env()
-
-TOP_100_ARTISTS = [
-    "The Beatles", "Elvis Presley", "Michael Jackson", "Madonna", "The Rolling Stones",
-    "Bob Dylan", "Led Zeppelin", "Prince", "Pink Floyd", "Aretha Franklin",
-    "Stevie Wonder", "David Bowie", "Queen", "Marvin Gaye", "The Beach Boys",
-    "Jimi Hendrix", "The Who", "Ray Charles", "Johnny Cash", "Elton John",
-    "Nirvana", "Bruce Springsteen", "The Supremes", "Kanye West", "The Eagles",
-    "Jay-Z", "Metallica", "Beyoncé", "The Doors", "Bob Marley",
-    "U2", "Outkast", "R.E.M.", "Eminem", "Adele",
-    "Patsy Cline", "Radiohead", "The Clash", "The Police", "Janet Jackson",
-    "Otis Redding", "Whitney Houston", "Tupac Shakur", "James Brown", "Kendrick Lamar",
-    "Fleetwood Mac", "Smokey Robinson", "The Temptations", "Paul Simon", "The Kinks",
-    "Simon & Garfunkel", "Creedence Clearwater Revival", "Public Enemy", "The Velvet Underground", "Santana",
-    "Billy Joel", "Green Day", "Eric Clapton", "LL Cool J", "The Allman Brothers Band",
-    "George Michael", "Little Richard", "Aerosmith", "Rihanna", "Missy Elliott",
-    "Neil Young", "Chuck Berry", "Van Halen", "The Jackson 5", "Joni Mitchell",
-    "Sly & The Family Stone", "Frank Sinatra", "Guns N' Roses", "The Ramones", "Al Green",
-    "Sam Cooke", "Louis Armstrong", "Dr. Dre", "Beastie Boys", "Curtis Mayfield",
-    "Notorious B.I.G.", "Nine Inch Nails", "Johnny Cash", "Pearl Jam", "Tina Turner",
-    "Diana Ross", "Dusty Springfield", "John Lennon", "Elvis Costello", "Bon Jovi",
-    "Red Hot Chili Peppers", "Bee Gees", "Etta James", "The Byrds", "Patti Smith",
-    "Bo Diddley", "Genesis", "Carole King", "Foo Fighters", "James Taylor",
-    "Dolly Parton", "The Cure", "KISS", "B.B. King", "The Zombies"
-]
 
 
 class SpotifyGenerator:
@@ -174,44 +150,43 @@ class SpotifyGenerator:
 
         artists_list = random.sample(TOP_100_ARTISTS, k=10)
         print(artists_list)
-        # try:
-        for i, artist in enumerate(artists_list):
-            print(i)
-            artist_id = self.get_artist_id(artist)
-            id = artist_id
-            url = f'https://api.spotify.com/v1/artists/{id}/top-tracks'
-            params = {'limit': self.limit, 'market': 'PL'}
-            headers = {'Authorization': self.get_bearer_token()}
-            response = requests.get(url=url, params=params, headers=headers).json()
-            data = response['tracks']
+        try:
+            for i, artist in enumerate(artists_list):
+                artist_id = self.get_artist_id(artist)
+                id = artist_id
+                url = f'https://api.spotify.com/v1/artists/{id}/top-tracks'
+                params = {'limit': self.limit, 'market': 'PL'}
+                headers = {'Authorization': self.get_bearer_token()}
+                response = requests.get(url=url, params=params, headers=headers).json()
+                data = response['tracks']
 
-            songs_list = []
-            # generation list of songs
-            for song in data:
-                if song.get('preview_url'):
-                    song_name = song['name']
-                    spotify_link = song['external_urls']['spotify']
-                    preview = song['preview_url']
-                    songs_list.append([song_name, spotify_link, preview])
-        
-            # creating set of 3 songs each artist
-            question_dict = {}
-            random_songs = random.sample(songs_list, k=3)
-            song_list = []
-            for song in random_songs:
-                song_dict = {
-                    'title': song[0],
-                    'link': song[1],
-                    'sample': song[2],
-                }
-                song_list.append(song_dict)
-                songs_list.remove(song)
-                # adding correct answer to song list
-                correct_answer = random.choice(song_list)
-                song_list.append(correct_answer)
-                # creating answers dictionary for each iteration
-                question_dict[i] = song_list
-                print(question_dict)
-        return question_dict
-        # except ValueError:
-        #     print("Incorrect random song query")
+                songs_list = []
+                # generation list of songs
+                for song in data:
+                    if song.get('preview_url'):
+                        song_name = song['name']
+                        spotify_link = song['external_urls']['spotify']
+                        preview = song['preview_url']
+                        songs_list.append([song_name, spotify_link, preview])
+            
+                # creating set of 3 songs each artist
+                question_dict = {}
+                random_songs = random.sample(songs_list, k=3)
+                song_list = []
+                for song in random_songs:
+                    song_dict = {
+                        'title': song[0],
+                        'link': song[1],
+                        'sample': song[2],
+                    }
+                    song_list.append(song_dict)
+                    songs_list.remove(song)
+                    # adding correct answer to song list
+                    correct_answer = random.choice(song_list)
+                    song_list.append(correct_answer)
+                    # creating answers dictionary for each iteration
+                    question_dict[i] = song_list
+                    print(question_dict)
+            return question_dict
+        except ValueError:
+            print("Incorrect random song query")
